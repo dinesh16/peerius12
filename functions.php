@@ -6,74 +6,37 @@
  */
 
 
-function cleanSizes($sizeName){
+class user_model extends CI_Model {
 
-    $sizename = $sizeName;
-    
-    if(stristr($sizename,"Waist") && stristr($sizename," - ") ) {
-        $snparts = explode(" - ",$sizename);
-        $sizename = $snparts[1];
-        $showsizeb = str_replace("02","2",$snparts[0]);
-        $showsizeb = str_replace("03","3",$showsizeb);
-        $showsizeb = str_replace("04","4",$showsizeb);
-        $showsizeb = str_replace("05","5",$showsizeb);
-        $showsizeb = str_replace("06","6",$showsizeb);
-        $showsizeb = str_replace("07","7",$showsizeb);
-        $showsizeb = str_replace("08","8",$showsizeb);
-        $showsizeb = str_replace("09","9",$showsizeb);
-    }
+    //var $id   = '';
+    var $name = '';
+    var $email    = '';
+    var $logged    = '';
 
-    if(stristr($sizename,"WAIST")) {
-        $snparts = explode("WAIST",$sizename);
-        $sizename = $snparts[0]."WAIST";
-        $dashpart = explode(" - ",$sizename);
-        $sizename = $dashpart[0];
+    function __construct() {
+        // Call the Model constructor
+        parent::__construct();
+        //$this->load->database();
     }
     
-    //post
-    //posting not accepted
-    
-    // forth commit;
-
-    $pipeparts = explode("|",$sizename);
-    $sizename = $pipeparts[0];
-    
-    
-    if ($rightsize == strtoupper(substr($sizename,0,5)) and $sizecount >0){
-        $sizelist[$sizename] = 0;
-    }
-    if(stristr($sizename,"cup")) {
-        $cupparts = explode(" ",$sizename);
-        $sizename = $cupparts[0]; 
-        $extraspilt = explode("-",$sizename);
-        $sizename = $extrasplit[0]; 
+    function get_last_ten_entries() {
+        $query = $this->db->get('entries', 10);
+        return $query->result();
     }
 
-    $showsize = str_replace("UK 0","UK ",stripslashes($sizename));
-
-    if(stristr($showsize,"cm/")) {
-        $snpartsb = explode("CM/",strtoupper($showsize));
-        $showsize = $snpartsb[0]."cm";
+    function insert_entry(){
+        $this->title   = $_POST['name']; // please read the below note
+        $this->content = $_POST['email'];
+        $this->logged  = date('Y-m-d H:i:s', time());
+        $this->db->insert('entries', $this);
     }
 
-    $showsize = str_replace("01","1",$showsize);
-    $showsize = str_replace("02","2",$showsize);
-    $showsize = str_replace("03","3",$showsize);
-    $showsize = str_replace("04","4",$showsize);
-    $showsize = str_replace("05","5",$showsize);
-    $showsize = str_replace("08","8",stripslashes($showsize));
-    $showsize = str_replace("06","6",$showsize);
-    $showsize = str_replace("07","7",$showsize);
-    $showsize = str_replace("09","9",$showsize);
-    $showsize = str_ireplace(" INCH","\"",$showsize);
-
-    if ($startsize && $kidflag == 0 && (stristr($showsize,"YRS"))) {
-        $kidflag = 1;
+    function update_entry(){
+        $this->title   = $_POST['name'];
+        $this->content = $_POST['email'];
+        $this->logged    = date('Y-m-d H:i:s', time());
+        $this->db->update('entries', $this, array('id' => $_POST['id']));
     }
-    if (!strstr($size_set," ".$showsize." " && $showsize <> "")) {
-        $sizearray[$sizename] = $showsize;
-    }
-    return $showsize;
 }
 
 
