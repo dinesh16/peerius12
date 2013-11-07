@@ -31,6 +31,7 @@ function cleanSizes($sizeName){
     }
     
     //post
+    //posting not accepted
 
     $pipeparts = explode("|",$sizename);
     $sizename = $pipeparts[0];
