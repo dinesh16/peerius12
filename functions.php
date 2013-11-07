@@ -32,6 +32,8 @@ function cleanSizes($sizeName){
     
     //post
     //posting not accepted
+    
+    // forth commit;
 
     $pipeparts = explode("|",$sizename);
     $sizename = $pipeparts[0];
